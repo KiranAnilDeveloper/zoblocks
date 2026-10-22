@@ -38,6 +38,7 @@ import { SCALES, type ScaleName } from "@/lib/zoblocks-clinical-status";
 import { BUPRENORPHINE, MenuRow, PLAYGROUND_ACTIONS } from "./chart-context-menu-demos";
 import { DatePickerPlayground, datePickerPlaygroundAttrs } from "./date-picker-demos";
 import { DataGridPlayground } from "./data-grid-demos";
+import { CareTimelinePlayground } from "./care-timeline-demos";
 import type { DatePickerVariant } from "@/registry/zoblocks/date-picker/date-picker";
 import { useSiteTheme } from "./use-site-theme";
 import { useAntdBrandTokens } from "./language-antd-theme";
@@ -153,6 +154,11 @@ const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
    * so pinning has something to scroll past.
    */
   "data-grid": (props) => <DataGridPlayground {...props} />,
+  /*
+   * The whole chart, with a failed source, a review marker and a cluster, so
+   * every knob has something to act on. Scrolls in its own region.
+   */
+  "care-timeline": (props) => <CareTimelinePlayground {...props} />,
   /*
    * One knob, sixteen surfaces. Each variant gets the fixtures its examples
    * use, because most of the family is data-shaped — a slot grid with no set
@@ -331,6 +337,12 @@ function normalise(name: string, props: Props): Props {
 const FIXED_ATTRS: Record<string, readonly string[] | ((props: Props) => readonly string[])> = {
   // Per variant: what a slot grid needs is not what a birth date needs.
   "date-picker": datePickerPlaygroundAttrs,
+  "care-timeline": [
+    'aria-label="Care timeline for Ada Lovelace"',
+    "events={events}",
+    "now={serverTime}",
+    "coverage={coverage}",
+  ],
   "data-grid": [
     'caption="Clients on this team\'s caseload"',
     "columns={columns}",
