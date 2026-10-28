@@ -19,7 +19,16 @@
 
 import * as React from "react";
 import type { Control } from "@zoblocks/component-meta";
-import { allergyList, medicationList, observationPanel } from "@zoblocks/fixtures";
+import {
+  allergyList,
+  medicationList,
+  observationCorrected,
+  observationDeclined,
+  observationMasked,
+  observationPanel,
+  observationPotassiumCritical,
+  observationPreliminary,
+} from "@zoblocks/fixtures";
 import { Tabs, type TabsItemProps, type TabsProps } from "@zoblocks/tabs";
 import { ConfigProvider, Form, theme } from "antd";
 import { Signature, signatureRequired, type SignatureProps } from "@zoblocks/signature";
@@ -52,6 +61,7 @@ import {
   RecentPatientStack,
   type OpenChart,
 } from "@/registry/zoblocks/recent-patient-stack/recent-patient-stack";
+import { ResultValue, fromObservation } from "@/registry/zoblocks/result-value/result-value";
 import { Switch, type SwitchProps } from "@/registry/zoblocks/switch/switch";
 import { Accordion } from "@/registry/zoblocks/accordion/accordion";
 import { CHART_ITEMS } from "./accordion-demos";
@@ -270,6 +280,19 @@ const RPS_CHARTS: OpenChart[] = [
   },
 ];
 
+/**
+ * The `value` knob names a fixture rather than carrying one — same reason
+ * Tabs' `items` knob does — so the renderer resolves the name through
+ * `fromObservation` rather than passing it through.
+ */
+const RESULT_OBSERVATIONS = {
+  observationPotassiumCritical,
+  observationPreliminary,
+  observationCorrected,
+  observationMasked,
+  observationDeclined,
+} as const;
+
 const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
   /*
    * The worklist with every interaction live — sort, selection, held
@@ -473,6 +496,24 @@ const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
       {...props}
     />
   ),
+  "result-value": (props) => {
+    const { value, now, ...rest } = props as { value?: string; now?: string } & Record<
+      string,
+      unknown
+    >;
+    const observation =
+      RESULT_OBSERVATIONS[value as keyof typeof RESULT_OBSERVATIONS] ??
+      observationPotassiumCritical;
+    return (
+      <Centered>
+        <ResultValue
+          {...rest}
+          value={fromObservation(observation)}
+          now={now ? now : "2026-08-12T10:00:00Z"}
+        />
+      </Centered>
+    );
+  },
 };
 
 /**

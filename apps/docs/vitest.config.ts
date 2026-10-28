@@ -54,6 +54,10 @@ export default defineConfig({
         replacement: path.join(root, "../../registry/zoblocks/timeline/timeline.tsx"),
       },
       {
+        find: /^@\/components\/zoblocks\/clinical-status$/,
+        replacement: path.join(root, "../../registry/zoblocks/clinical-status/clinical-status.tsx"),
+      },
+      {
         find: /^@\/lib\/zoblocks-recorder$/,
         replacement: path.join(root, "../../registry/zoblocks/lib/recorder.tsx"),
       },
@@ -80,6 +84,10 @@ export default defineConfig({
       {
         find: /^@\/lib\/zoblocks-workspace$/,
         replacement: path.join(root, "../../registry/zoblocks/lib/workspace.ts"),
+      },
+      {
+        find: /^@\/lib\/zoblocks-result-value$/,
+        replacement: path.join(root, "../../registry/zoblocks/lib/result-value.ts"),
       },
       {
         find: /^@\/lib\/zoblocks-menu$/,
