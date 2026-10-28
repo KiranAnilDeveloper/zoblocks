@@ -223,6 +223,7 @@ export const DOCUMENTED_ORDER: readonly string[] = [
   "result-value",
   "risk-indicator",
   "safety-plan",
+  "timeline",
 ];
 
 const DOCUMENTED = new Set(DOCUMENTED_ORDER);
