@@ -62,6 +62,10 @@ import {
   type OpenChart,
 } from "@/registry/zoblocks/recent-patient-stack/recent-patient-stack";
 import { ResultValue, fromObservation } from "@/registry/zoblocks/result-value/result-value";
+import {
+  RiskIndicator,
+  type RiskAssessment,
+} from "@/registry/zoblocks/risk-indicator/risk-indicator";
 import { Switch, type SwitchProps } from "@/registry/zoblocks/switch/switch";
 import { Accordion } from "@/registry/zoblocks/accordion/accordion";
 import { CHART_ITEMS } from "./accordion-demos";
@@ -293,6 +297,30 @@ const RESULT_OBSERVATIONS = {
   observationDeclined,
 } as const;
 
+/** A 30-day readmission score, with six drivers so `driverCount` has a real ceiling to reach. */
+const RI_ASSESSMENT: RiskAssessment = {
+  id: "ri1",
+  outcome: "30-day readmission",
+  band: "high",
+  probability: 0.31,
+  percentile: 94,
+  cohort: "adult medicine",
+  computedAt: "2026-08-12T04:12:00Z",
+  validUntil: "2026-08-13T04:12:00Z",
+  drivers: [
+    { label: "3 admissions / 6 mo", weight: 11.2 },
+    { label: "Lives alone", weight: 4.8 },
+    { label: "No PCP visit < 90 d", weight: 3.9 },
+    { label: "Polypharmacy, 9 meds", weight: 2.6 },
+    { label: "ED visit, 14 d", weight: 2.1 },
+    { label: "Adherent to statin", weight: -2.1 },
+  ],
+  model: { name: "Readmit-v4", auc: 0.71 },
+};
+
+const RI_FRAMING =
+  "A statistical estimate from historical patterns. Not a diagnosis, and not a substitute for assessment.";
+
 const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
   /*
    * The worklist with every interaction live — sort, selection, held
@@ -514,6 +542,27 @@ const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
       </Centered>
     );
   },
+  /*
+   * `now` and `notADiagnosis` are both required props and both text knobs,
+   * so both carry the same clear-to-undefined ordering issue Provenance
+   * Chip's `now` does — resolved the same way, after the spread.
+   */
+  "risk-indicator": (props) => {
+    const { now, notADiagnosis, ...rest } = props as {
+      now?: string;
+      notADiagnosis?: string;
+    } & Record<string, unknown>;
+    return (
+      <Centered>
+        <RiskIndicator
+          assessment={RI_ASSESSMENT}
+          {...rest}
+          now={now ? now : "2026-08-12T10:00:00Z"}
+          notADiagnosis={notADiagnosis ? notADiagnosis : RI_FRAMING}
+        />
+      </Centered>
+    );
+  },
 };
 
 /**
@@ -599,6 +648,7 @@ const FIXED_ATTRS: Record<string, readonly string[] | ((props: Props) => readonl
     'activeId="chart-okonkwo"',
     'now="2026-08-24T10:00:00Z"',
   ],
+  "risk-indicator": ["assessment={assessment}"],
 };
 
 function resolveFixed(

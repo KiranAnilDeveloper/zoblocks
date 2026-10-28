@@ -75,7 +75,7 @@ function settings(control: Control): unknown[] {
 function outcome(container: HTMLElement): "component" | "explained" | "blank" {
   if (
     container.querySelector(
-      "[data-zb-tab], [data-zb-signature], [data-zb-loader], [data-zb-accordion], .zb-cs, [data-zb-menu], [class^='zb-dt'], [class*=' zb-dt'], [role='grid'], [data-zb-care-timeline], [data-zb-recorder], [data-zb-trend], [data-zb-presence], [data-zb-chart-header], [data-zb-provenance], [data-zb-stack], [data-zb-result], [role='switch'], [role='radiogroup'], nav",
+      "[data-zb-tab], [data-zb-signature], [data-zb-loader], [data-zb-accordion], .zb-cs, [data-zb-menu], [class^='zb-dt'], [class*=' zb-dt'], [role='grid'], [data-zb-care-timeline], [data-zb-recorder], [data-zb-trend], [data-zb-presence], [data-zb-chart-header], [data-zb-provenance], [data-zb-stack], [data-zb-result], [data-zb-risk], [role='switch'], [role='radiogroup'], nav",
     )
   ) {
     return "component";
