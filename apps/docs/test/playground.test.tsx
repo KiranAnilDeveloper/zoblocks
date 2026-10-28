@@ -75,7 +75,7 @@ function settings(control: Control): unknown[] {
 function outcome(container: HTMLElement): "component" | "explained" | "blank" {
   if (
     container.querySelector(
-      "[data-zb-tab], [data-zb-signature], [data-zb-loader], [data-zb-accordion], .zb-cs, [data-zb-menu], [class^='zb-dt'], [class*=' zb-dt'], [role='grid'], [data-zb-care-timeline], [data-zb-recorder], [role='switch'], [role='radiogroup'], nav",
+      "[data-zb-tab], [data-zb-signature], [data-zb-loader], [data-zb-accordion], .zb-cs, [data-zb-menu], [class^='zb-dt'], [class*=' zb-dt'], [role='grid'], [data-zb-care-timeline], [data-zb-recorder], [data-zb-trend], [role='switch'], [role='radiogroup'], nav",
     )
   ) {
     return "component";
@@ -173,8 +173,18 @@ describe.each(components.map((c) => [c.name, c] as const))("%s playground", (nam
       ? pairs
       : singles.map(([label, prop, value]) => [label, { [prop]: value }] as const);
 
+  /*
+   * Two sliders cap at 3×3−1 = 8 pairs — `settings()` gives a slider exactly
+   * [undefined, min, max], whatever the range, so no choice of min/max/step
+   * raises it. 20 assumed the switches and selects every other multi-knob
+   * playground is built from; a slider-only one has a smaller ceiling by
+   * construction rather than a degenerate space.
+   */
+  const allSliders = controls.length > 0 && controls.every((c) => c.control === "slider");
+
   it("has a setting space worth walking", () => {
-    expect(space.length).toBeGreaterThan(controls.length > 1 ? 20 : 8);
+    const floor = controls.length > 1 ? (allSliders ? 7 : 20) : 8;
+    expect(space.length).toBeGreaterThan(floor);
   });
 
   // Tallied by the walk below rather than re-rendered: the majority check

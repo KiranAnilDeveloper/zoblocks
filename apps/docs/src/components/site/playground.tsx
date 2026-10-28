@@ -29,6 +29,10 @@ import { RhythmLoader } from "@/registry/zoblocks/rhythm-loader/rhythm-loader";
 import { BreathLoader } from "@/registry/zoblocks/breath-loader/breath-loader";
 import { HelixLoader } from "@/registry/zoblocks/helix-loader/helix-loader";
 import { InfusionLoader } from "@/registry/zoblocks/infusion-loader/infusion-loader";
+import {
+  TrendIndicator,
+  type TrendSeries,
+} from "@/registry/zoblocks/trend-indicator/trend-indicator";
 import { Switch, type SwitchProps } from "@/registry/zoblocks/switch/switch";
 import { Accordion } from "@/registry/zoblocks/accordion/accordion";
 import { CHART_ITEMS } from "./accordion-demos";
@@ -146,6 +150,26 @@ function chartFor(mode: string, fixture: string): TabsItemProps[] {
     children: <Filler>{String(section.label)}</Filler>,
   }));
 }
+
+/**
+ * A falling PHQ-9 — five comparable points, so the knobs always have a real
+ * trend to draw. `width`/`height` are the knobs; `series` is fixed, because
+ * picking a series is the same editorial call `accordion`'s fixed items are.
+ */
+const PHQ9_TREND: TrendSeries = {
+  id: "phq9",
+  label: "PHQ-9",
+  valence: "higher-is-worse",
+  significantChange: 5,
+  referenceRange: { low: 0, high: 4 },
+  points: [
+    { at: "2026-03-04T09:00:00Z", value: 21 },
+    { at: "2026-04-04T09:00:00Z", value: 18 },
+    { at: "2026-05-04T09:00:00Z", value: 14 },
+    { at: "2026-06-04T09:00:00Z", value: 11 },
+    { at: "2026-07-04T09:00:00Z", value: 9 },
+  ],
+};
 
 const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
   /*
@@ -294,6 +318,11 @@ const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
       </Form>
     );
   },
+  "trend-indicator": (props) => (
+    <Centered>
+      <TrendIndicator series={PHQ9_TREND} {...props} />
+    </Centered>
+  ),
 };
 
 /**
@@ -364,6 +393,7 @@ const FIXED_ATTRS: Record<string, readonly string[] | ((props: Props) => readonl
     'policy={{ role: "a registered nurse", breakGlass: true }}',
     "now={serverTime}",
   ],
+  "trend-indicator": ["series={phq9}"],
 };
 
 function resolveFixed(
