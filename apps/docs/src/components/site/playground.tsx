@@ -33,6 +33,10 @@ import {
   TrendIndicator,
   type TrendSeries,
 } from "@/registry/zoblocks/trend-indicator/trend-indicator";
+import {
+  PresenceChip,
+  type Presence,
+} from "@/registry/zoblocks/care-team-presence/care-team-presence";
 import { Switch, type SwitchProps } from "@/registry/zoblocks/switch/switch";
 import { Accordion } from "@/registry/zoblocks/accordion/accordion";
 import { CHART_ITEMS } from "./accordion-demos";
@@ -169,6 +173,17 @@ const PHQ9_TREND: TrendSeries = {
     { at: "2026-06-04T09:00:00Z", value: 11 },
     { at: "2026-07-04T09:00:00Z", value: 9 },
   ],
+};
+
+/**
+ * Signed out, with the cover named — the state the component exists to get
+ * right: online, at a desk, and the wrong person to contact.
+ */
+const CTP_PRESENCE: Presence = {
+  clinician: { id: "clin-4", display: "A. Vance, MD", role: "Attending" },
+  state: "signed-out",
+  coveredBy: { id: "clin-1", display: "T. Boateng, MD", role: "Night attending" },
+  until: "07:00",
 };
 
 const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
@@ -323,6 +338,11 @@ const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
       <TrendIndicator series={PHQ9_TREND} {...props} />
     </Centered>
   ),
+  "care-team-presence": (props) => (
+    <Centered>
+      <PresenceChip presence={CTP_PRESENCE} now="2026-08-24T02:30:00+05:30" {...props} />
+    </Centered>
+  ),
 };
 
 /**
@@ -394,6 +414,7 @@ const FIXED_ATTRS: Record<string, readonly string[] | ((props: Props) => readonl
     "now={serverTime}",
   ],
   "trend-indicator": ["series={phq9}"],
+  "care-team-presence": ["presence={vance}", 'now="2026-08-24T02:30:00+05:30"'],
 };
 
 function resolveFixed(

@@ -29,6 +29,7 @@ export const PLAYGROUND_COMPONENTS: ReadonlySet<string> = new Set([
   "helix-loader",
   "infusion-loader",
   "trend-indicator",
+  "care-team-presence",
 ]);
 
 export function hasPlayground(name: string): boolean {
