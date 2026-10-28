@@ -221,6 +221,7 @@ export const DOCUMENTED_ORDER: readonly string[] = [
   "provenance-chip",
   "recent-patient-stack",
   "result-value",
+  "risk-indicator",
 ];
 
 const DOCUMENTED = new Set(DOCUMENTED_ORDER);
