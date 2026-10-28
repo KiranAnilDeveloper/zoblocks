@@ -70,6 +70,10 @@ export default defineConfig({
         replacement: path.join(root, "../../registry/zoblocks/lib/clock.ts"),
       },
       {
+        find: /^@\/lib\/zoblocks-chart-header$/,
+        replacement: path.join(root, "../../registry/zoblocks/lib/chart-header.ts"),
+      },
+      {
         find: /^@\/lib\/zoblocks-menu$/,
         replacement: path.join(root, "../../registry/zoblocks/lib/menu.ts"),
       },

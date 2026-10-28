@@ -37,6 +37,12 @@ import {
   PresenceChip,
   type Presence,
 } from "@/registry/zoblocks/care-team-presence/care-team-presence";
+import {
+  ChartHeader,
+  type EncounterOption,
+  type SafetyInput,
+} from "@/registry/zoblocks/chart-header/chart-header";
+import type { Patient } from "@zoblocks/fhir";
 import { Switch, type SwitchProps } from "@/registry/zoblocks/switch/switch";
 import { Accordion } from "@/registry/zoblocks/accordion/accordion";
 import { CHART_ITEMS } from "./accordion-demos";
@@ -184,6 +190,33 @@ const CTP_PRESENCE: Presence = {
   state: "signed-out",
   coveredBy: { id: "clin-1", display: "T. Boateng, MD", role: "Night attending" },
   until: "07:00",
+};
+
+const CH_PATIENT: Patient = {
+  resourceType: "Patient",
+  id: "syn-ch-1",
+  name: [{ use: "official", family: "Okonkwo", given: ["Amara"] }],
+  birthDate: "1985-03-08",
+  gender: "female",
+  identifier: [
+    { use: "official", system: "http://example.org/fhir/sid/mrn", value: "093-441-208" },
+    { use: "official", system: "https://fhir.nhs.uk/Id/nhs-number", value: "943 476 5919" },
+  ],
+};
+
+const CH_IDENTIFIERS = [{ kind: "mrn" }, { kind: "nhs" }] as const;
+
+const CH_ENCOUNTERS: EncounterOption[] = [
+  { id: "enc-1", label: "Inpatient — Ward 4B", type: "inpatient" },
+  { id: "enc-2", label: "Outpatient — 24 Aug, 09:00", type: "ambulatory" },
+  { id: "enc-3", label: "Telehealth — 24 Aug, 14:00", type: "virtual" },
+];
+
+const CH_SAFETY: SafetyInput = {
+  allergies: { label: "Penicillin — anaphylaxis", tone: "critical", detail: "confirmed" },
+  codeStatus: { label: "DNR" },
+  isolation: { label: "Contact precautions", detail: "MRSA" },
+  legalStatus: { label: "Involuntary hold", until: "2026-08-24T09:00:00Z" },
 };
 
 const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
@@ -343,6 +376,22 @@ const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
       <PresenceChip presence={CTP_PRESENCE} now="2026-08-24T02:30:00+05:30" {...props} />
     </Centered>
   ),
+  /*
+   * `collapsed` only sets the header's starting height — the component owns
+   * the state from then on, same as Accordion's `defaultOpenKeys` — so the
+   * knob needs a remount to be seen, the same `key` trick Switch uses.
+   */
+  "chart-header": (props) => (
+    <ChartHeader
+      key={`${String(props.collapsed ?? false)}-${String(props.surface ?? "overview")}`}
+      patient={CH_PATIENT}
+      identifiers={CH_IDENTIFIERS}
+      now="2026-08-24T10:00:00Z"
+      safety={CH_SAFETY}
+      encounters={CH_ENCOUNTERS}
+      {...props}
+    />
+  ),
 };
 
 /**
@@ -415,6 +464,13 @@ const FIXED_ATTRS: Record<string, readonly string[] | ((props: Props) => readonl
   ],
   "trend-indicator": ["series={phq9}"],
   "care-team-presence": ["presence={vance}", 'now="2026-08-24T02:30:00+05:30"'],
+  "chart-header": [
+    "patient={patient}",
+    'identifiers={[{ kind: "mrn" }, { kind: "nhs" }]}',
+    'now="2026-08-24T10:00:00Z"',
+    "safety={safety}",
+    "encounters={encounters}",
+  ],
 };
 
 function resolveFixed(
