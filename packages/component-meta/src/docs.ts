@@ -216,6 +216,7 @@ export const DOCUMENTED_ORDER: readonly string[] = [
   "chart-accordion",
   "chart-command-palette",
   "chart-header",
+  "clinical-note",
 ];
 
 const DOCUMENTED = new Set(DOCUMENTED_ORDER);
