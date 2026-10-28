@@ -48,6 +48,10 @@ import {
   type ProvenanceRecord,
   type StalenessPolicy,
 } from "@/registry/zoblocks/provenance-chip/provenance-chip";
+import {
+  RecentPatientStack,
+  type OpenChart,
+} from "@/registry/zoblocks/recent-patient-stack/recent-patient-stack";
 import { Switch, type SwitchProps } from "@/registry/zoblocks/switch/switch";
 import { Accordion } from "@/registry/zoblocks/accordion/accordion";
 import { CHART_ITEMS } from "./accordion-demos";
@@ -239,6 +243,33 @@ const PC_POLICY: StalenessPolicy = (record) => {
   return null;
 };
 
+/** Three open charts: one pinned, one with outstanding work, none photographed. */
+const RPS_CHARTS: OpenChart[] = [
+  {
+    id: "chart-okonkwo",
+    display: "A. Okonkwo",
+    identifier: "093-441-208",
+    reason: "Ward round",
+    lastActiveAt: "2026-08-24T09:58:00Z",
+  },
+  {
+    id: "chart-boateng",
+    display: "T. Boateng",
+    identifier: "093-118-774",
+    reason: "Discharge summary",
+    lastActiveAt: "2026-08-24T09:30:00Z",
+    work: [{ kind: "unsigned-note", label: "Progress note", since: "2026-08-21T09:00:00Z" }],
+  },
+  {
+    id: "chart-vance",
+    display: "R. Vance",
+    identifier: "093-004-661",
+    reason: "Med review",
+    pinned: true,
+    lastActiveAt: "2026-08-23T17:00:00Z",
+  },
+];
+
 const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
   /*
    * The worklist with every interaction live — sort, selection, held
@@ -428,6 +459,20 @@ const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
       />
     </Centered>
   ),
+  /*
+   * `expanded` only sets the stack's starting layout — the component owns it
+   * from then on — so the knob remounts it, the same trick Chart Header's
+   * `collapsed` uses.
+   */
+  "recent-patient-stack": (props) => (
+    <RecentPatientStack
+      key={String(props.expanded ?? false)}
+      charts={RPS_CHARTS}
+      activeId="chart-okonkwo"
+      now="2026-08-24T10:00:00Z"
+      {...props}
+    />
+  ),
 };
 
 /**
@@ -508,6 +553,11 @@ const FIXED_ATTRS: Record<string, readonly string[] | ((props: Props) => readonl
     "encounters={encounters}",
   ],
   "provenance-chip": ["record={record}", "stalenessPolicy={stalenessPolicy}"],
+  "recent-patient-stack": [
+    "charts={charts}",
+    'activeId="chart-okonkwo"',
+    'now="2026-08-24T10:00:00Z"',
+  ],
 };
 
 function resolveFixed(

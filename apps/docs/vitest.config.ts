@@ -78,6 +78,10 @@ export default defineConfig({
         replacement: path.join(root, "../../registry/zoblocks/lib/provenance.ts"),
       },
       {
+        find: /^@\/lib\/zoblocks-workspace$/,
+        replacement: path.join(root, "../../registry/zoblocks/lib/workspace.ts"),
+      },
+      {
         find: /^@\/lib\/zoblocks-menu$/,
         replacement: path.join(root, "../../registry/zoblocks/lib/menu.ts"),
       },
