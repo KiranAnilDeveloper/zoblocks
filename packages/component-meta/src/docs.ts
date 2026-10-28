@@ -213,6 +213,7 @@ export const DOCUMENTED_ORDER: readonly string[] = [
   "care-timeline",
   "allergy-chip",
   "care-team-presence",
+  "chart-accordion",
 ];
 
 const DOCUMENTED = new Set(DOCUMENTED_ORDER);
