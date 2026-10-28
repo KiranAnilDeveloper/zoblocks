@@ -31,6 +31,7 @@ export const PLAYGROUND_COMPONENTS: ReadonlySet<string> = new Set([
   "trend-indicator",
   "care-team-presence",
   "chart-header",
+  "provenance-chip",
 ]);
 
 export function hasPlayground(name: string): boolean {

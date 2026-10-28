@@ -43,6 +43,11 @@ import {
   type SafetyInput,
 } from "@/registry/zoblocks/chart-header/chart-header";
 import type { Patient } from "@zoblocks/fhir";
+import {
+  ProvenanceChip,
+  type ProvenanceRecord,
+  type StalenessPolicy,
+} from "@/registry/zoblocks/provenance-chip/provenance-chip";
 import { Switch, type SwitchProps } from "@/registry/zoblocks/switch/switch";
 import { Accordion } from "@/registry/zoblocks/accordion/accordion";
 import { CHART_ITEMS } from "./accordion-demos";
@@ -219,6 +224,21 @@ const CH_SAFETY: SafetyInput = {
   legalStatus: { label: "Involuntary hold", until: "2026-08-24T09:00:00Z" },
 };
 
+/** A clinic reading, performed and witnessed — the ordinary, actionable case. */
+const PC_RECORD: ProvenanceRecord = {
+  source: "clinic",
+  observedAt: "2026-08-12T09:48:00Z",
+  performer: { display: "M. Adeyemi", role: "MA" },
+  device: "Welch Allyn 6000",
+};
+
+/** Two days for a device reading, a month for self-report, silence otherwise. */
+const PC_POLICY: StalenessPolicy = (record) => {
+  if (record.source === "device") return 48 * 3_600_000;
+  if (record.source === "patient-reported") return 30 * 86_400_000;
+  return null;
+};
+
 const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
   /*
    * The worklist with every interaction live — sort, selection, held
@@ -392,6 +412,22 @@ const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
       {...props}
     />
   ),
+  /*
+   * `now` is a text knob and `Knob` clears it to an explicit `undefined`
+   * rather than omitting the key, which would win over a fixed default
+   * placed before the spread — so it is resolved after, same shape as the
+   * `key` trick above for a prop the spread can't be allowed to blank out.
+   */
+  "provenance-chip": (props) => (
+    <Centered>
+      <ProvenanceChip
+        record={PC_RECORD}
+        stalenessPolicy={PC_POLICY}
+        {...props}
+        now={typeof props.now === "string" && props.now ? props.now : "2026-08-12T10:00:00Z"}
+      />
+    </Centered>
+  ),
 };
 
 /**
@@ -471,6 +507,7 @@ const FIXED_ATTRS: Record<string, readonly string[] | ((props: Props) => readonl
     "safety={safety}",
     "encounters={encounters}",
   ],
+  "provenance-chip": ["record={record}", "stalenessPolicy={stalenessPolicy}"],
 };
 
 function resolveFixed(
