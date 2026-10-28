@@ -1633,7 +1633,7 @@ export const CATALOG: ComponentDoc[] = [
           {
             "name": "now",
             "type": "string",
-            "description": "",
+            "description": "ISO 8601, supplied by the host. The gap this component exists to find is a window in time.",
             "required": true
           },
           {
@@ -1669,7 +1669,7 @@ export const CATALOG: ComponentDoc[] = [
           {
             "name": "now",
             "type": "string",
-            "description": "",
+            "description": "ISO 8601, supplied by the host. Adds \"started … ago\" to the conflict notice; omitted, the notice drops that clause.",
             "required": false
           },
           {
