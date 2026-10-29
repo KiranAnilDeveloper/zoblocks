@@ -2982,6 +2982,25 @@ export const CATALOG: ComponentDoc[] = [
       "tailwind-merge"
     ],
     "install": "npx @zoblocks/cli add chart-accordion",
+    "controls": [
+      {
+        "prop": "toolbar",
+        "control": "switch",
+        "label": "Toolbar",
+        "defaultValue": true
+      },
+      {
+        "prop": "density",
+        "control": "segmented",
+        "label": "Density",
+        "options": [
+          "patient",
+          "standard",
+          "clinical"
+        ],
+        "defaultValue": "clinical"
+      }
+    ],
     "relationships": {
       "builtWith": [
         "accordion"

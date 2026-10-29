@@ -66,6 +66,10 @@ import {
   RiskIndicator,
   type RiskAssessment,
 } from "@/registry/zoblocks/risk-indicator/risk-indicator";
+import {
+  ChartAccordion,
+  type ChartSection,
+} from "@/registry/zoblocks/chart-accordion/chart-accordion";
 import { Switch, type SwitchProps } from "@/registry/zoblocks/switch/switch";
 import { Accordion } from "@/registry/zoblocks/accordion/accordion";
 import { CHART_ITEMS } from "./accordion-demos";
@@ -321,6 +325,38 @@ const RI_ASSESSMENT: RiskAssessment = {
 const RI_FRAMING =
   "A statistical estimate from historical patterns. Not a diagnosis, and not a substitute for assessment.";
 
+/** Four sections, two severities and a withheld one, so the toolbar has real work to do. */
+const CA_SECTIONS: ChartSection[] = [
+  {
+    key: "risk",
+    label: "Risk & suicidality",
+    severity: "critical",
+    status: "C-SSRS positive",
+    updatedAt: "2026-08-13",
+    children: <p>Ideation 3 — active thoughts, no plan, no intent, no preparatory behaviour.</p>,
+  },
+  {
+    key: "meds",
+    label: "Medications",
+    severity: "high",
+    status: "Clozapine ANC due 18 Aug",
+    count: "4 active",
+    children: <p>Clozapine 200 mg nocte. ANC due 18 Aug.</p>,
+  },
+  {
+    key: "notes",
+    label: "Progress notes",
+    count: "142 encounters",
+    updatedAt: "2026-08-13",
+    children: <p>BIRP format.</p>,
+  },
+  {
+    key: "psychotherapy",
+    label: "Psychotherapy notes",
+    access: { kind: "withheld", reason: "Kept separately by the author" },
+  },
+];
+
 const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
   /*
    * The worklist with every interaction live — sort, selection, held
@@ -563,6 +599,16 @@ const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
       </Centered>
     );
   },
+  "chart-accordion": (props) => (
+    <div className="mx-auto w-full max-w-xl">
+      <ChartAccordion
+        sections={CA_SECTIONS}
+        toolbarLabel="Okonkwo, A. · MRN 4471902"
+        defaultOpenKeys={["risk"]}
+        {...props}
+      />
+    </div>
+  ),
 };
 
 /**
@@ -649,6 +695,11 @@ const FIXED_ATTRS: Record<string, readonly string[] | ((props: Props) => readonl
     'now="2026-08-24T10:00:00Z"',
   ],
   "risk-indicator": ["assessment={assessment}"],
+  "chart-accordion": [
+    "sections={chartSections}",
+    'toolbarLabel="Okonkwo, A. · MRN 4471902"',
+    'defaultOpenKeys={["risk"]}',
+  ],
 };
 
 function resolveFixed(
