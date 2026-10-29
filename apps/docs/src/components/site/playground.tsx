@@ -72,6 +72,7 @@ import {
 } from "@/registry/zoblocks/chart-accordion/chart-accordion";
 import { SignGate, type NoteAuthor } from "@/registry/zoblocks/clinical-note/clinical-note";
 import type { Finding } from "@zoblocks/clinical-note-core";
+import { SafetyPlan, type SafetyPlanSteps } from "@/registry/zoblocks/safety-plan/safety-plan";
 import { Switch, type SwitchProps } from "@/registry/zoblocks/switch/switch";
 import { Accordion } from "@/registry/zoblocks/accordion/accordion";
 import { CHART_ITEMS } from "./accordion-demos";
@@ -378,6 +379,27 @@ const CN_FINDINGS: Finding[] = [
   { id: "required-sections", severity: "pass", title: "Every required section has content" },
 ];
 
+/** The Stanley-Brown six, complete. */
+const SP_STEPS: SafetyPlanSteps = {
+  warningSigns: {
+    entries: ["Sleeping less than four hours", "Not answering messages for two days"],
+  },
+  internalCoping: {
+    entries: ["Walk to the end of the road and back", "Four in, six out, ten times"],
+  },
+  distractions: { entries: ["The cafe on Bell Street before 11am"] },
+  supportContacts: {
+    contacts: [{ name: "Priya", detail: "Sister", availability: "Any time" }],
+  },
+  professionals: {
+    contacts: [
+      { name: "988", detail: "Suicide & Crisis Lifeline", availability: "24 hours" },
+      { name: "County crisis team", detail: "555 0148", availability: "24 hours" },
+    ],
+  },
+  environment: { entries: ["Priya is holding the spare keys to the garage"] },
+};
+
 const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
   /*
    * The worklist with every interaction live — sort, selection, held
@@ -648,6 +670,11 @@ const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
       />
     </div>
   ),
+  "safety-plan": (props) => (
+    <div className="mx-auto w-full max-w-xl">
+      <SafetyPlan steps={SP_STEPS} revisedAt="2026-08-11" headingLevel={3} {...props} />
+    </div>
+  ),
 };
 
 /**
@@ -744,6 +771,7 @@ const FIXED_ATTRS: Record<string, readonly string[] | ((props: Props) => readonl
     'author={{ display: "R. Menon, MD", role: "Resident", requiresCosign: true }}',
     'attestation="I have reviewed this note in its entirety and attest that it accurately reflects the care I provided."',
   ],
+  "safety-plan": ["steps={steps}", 'revisedAt="2026-08-11"', "headingLevel={3}"],
 };
 
 function resolveFixed(

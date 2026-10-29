@@ -13279,6 +13279,25 @@ export const CATALOG: ComponentDoc[] = [
       "tailwind-merge"
     ],
     "install": "npx @zoblocks/cli add safety-plan",
+    "controls": [
+      {
+        "prop": "pinCrisisStep",
+        "control": "switch",
+        "label": "Pin crisis step",
+        "defaultValue": true
+      },
+      {
+        "prop": "density",
+        "control": "segmented",
+        "label": "Density",
+        "options": [
+          "patient",
+          "standard",
+          "clinical"
+        ],
+        "defaultValue": "patient"
+      }
+    ],
     "relationships": {
       "builtWith": [
         "accordion"
