@@ -74,6 +74,14 @@ import { SignGate, type NoteAuthor } from "@/registry/zoblocks/clinical-note/cli
 import type { Finding } from "@zoblocks/clinical-note-core";
 import { SafetyPlan, type SafetyPlanSteps } from "@/registry/zoblocks/safety-plan/safety-plan";
 import { Timeline, type TimelineItemType } from "@/registry/zoblocks/timeline/timeline";
+import { Copilot, type CopilotProps } from "@/registry/zoblocks/copilot/copilot";
+import {
+  createStaticProvider,
+  lookUp,
+  minimalDisclosure,
+  type CopilotEvent,
+  type Source,
+} from "@zoblocks/copilot-core";
 import { Switch, type SwitchProps } from "@/registry/zoblocks/switch/switch";
 import { Accordion } from "@/registry/zoblocks/accordion/accordion";
 import { CHART_ITEMS } from "./accordion-demos";
@@ -409,6 +417,61 @@ const TL_ITEMS: TimelineItemType[] = [
   { title: "16 Aug, 14:02", content: "Progress note filed" },
 ];
 
+const COPILOT_DISCLOSURE = minimalDisclosure("demo-model@1", {
+  developer: "Zowork",
+  knowledgeCutoff: "2025-10",
+});
+
+const COPILOT_GUIDELINE: Source = {
+  id: "acc-aha-af",
+  title: "2023 ACC/AHA/HRS AF Guideline",
+  passage:
+    "In patients with atrial fibrillation and rapid ventricular response, rate control is a reasonable initial approach for those without severe symptoms.",
+  highlight: [40, 106],
+  kind: "guideline",
+  version: "2023.1",
+  retrievedAt: "2026-08-16T09:00:00.000Z",
+  score: 0.91,
+};
+
+/** A cited, grounded answer — the state the component exists to make routine. */
+const COPILOT_STREAM: CopilotEvent[] = [
+  {
+    type: "delta",
+    text: "Rate control is a reasonable initial approach for most patients without severe symptoms.",
+  },
+  { type: "citation", marker: 1, source: COPILOT_GUIDELINE },
+  { type: "claim", claim: { span: [0, 88], markers: [1] } },
+  { type: "done", finish: "stop" },
+];
+
+/**
+ * `anchor` stays fixed to `inline` here, the same way every Preview scenario
+ * for this component already does: the other two values dock the component
+ * `fixed` to the real viewport edge, which would make it escape the
+ * playground's own stage rather than stay inside it. `suppressed` stays
+ * fixed to `false` for the reason Chart Command Palette's `open` was never a
+ * knob — a prop whose true value means "render nothing" always fails the
+ * walk's survives check for that exact setting, not as a matter of odds.
+ */
+function CopilotPlaygroundDemo(props: Partial<CopilotProps>) {
+  const provider = React.useMemo(
+    () =>
+      createStaticProvider({ events: COPILOT_STREAM, disclosure: COPILOT_DISCLOSURE, delayMs: 90 }),
+    [],
+  );
+  return (
+    <Copilot
+      provider={provider}
+      modes={[lookUp]}
+      actor={{ display: "Dr Amara Okafor", credential: "MD", reference: "Practitioner/7" }}
+      {...props}
+      anchor="inline"
+      suppressed={false}
+    />
+  );
+}
+
 const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
   /*
    * The worklist with every interaction live — sort, selection, held
@@ -689,6 +752,11 @@ const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
       <Timeline items={TL_ITEMS} aria-label="Admission chronology" {...props} />
     </div>
   ),
+  copilot: (props) => (
+    <div className="mx-auto w-full max-w-md">
+      <CopilotPlaygroundDemo {...(props as Partial<CopilotProps>)} />
+    </div>
+  ),
 };
 
 /**
@@ -787,6 +855,12 @@ const FIXED_ATTRS: Record<string, readonly string[] | ((props: Props) => readonl
   ],
   "safety-plan": ["steps={steps}", 'revisedAt="2026-08-11"', "headingLevel={3}"],
   timeline: ["items={items}", 'aria-label="Admission chronology"'],
+  copilot: [
+    "provider={provider}",
+    "modes={[lookUp]}",
+    'actor={{ display: "Dr Amara Okafor", credential: "MD", reference: "Practitioner/7" }}',
+    'anchor="inline"',
+  ],
 };
 
 function resolveFixed(
