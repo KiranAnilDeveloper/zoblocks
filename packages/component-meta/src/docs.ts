@@ -212,6 +212,19 @@ export const DOCUMENTED_ORDER: readonly string[] = [
   "data-grid",
   "care-timeline",
   "allergy-chip",
+  "care-team-presence",
+  "chart-accordion",
+  "chart-command-palette",
+  "chart-header",
+  "clinical-note",
+  "copilot",
+  "provenance-chip",
+  "recent-patient-stack",
+  "result-value",
+  "risk-indicator",
+  "safety-plan",
+  "timeline",
+  "trend-indicator",
 ];
 
 const DOCUMENTED = new Set(DOCUMENTED_ORDER);
