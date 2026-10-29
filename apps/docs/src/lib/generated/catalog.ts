@@ -5934,7 +5934,19 @@ export const CATALOG: ComponentDoc[] = [
       "@zoblocks/copilot-core",
       "@zoblocks/copilot-react"
     ],
-    "install": "npx @zoblocks/cli add copilot"
+    "install": "npx @zoblocks/cli add copilot",
+    "controls": [
+      {
+        "prop": "announcementMode",
+        "control": "segmented",
+        "label": "Streaming announced as",
+        "options": [
+          "summary",
+          "progressive"
+        ],
+        "defaultValue": "summary"
+      }
+    ]
   },
   {
     "name": "data-grid",
