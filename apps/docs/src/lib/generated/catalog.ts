@@ -14814,6 +14814,35 @@ export const CATALOG: ComponentDoc[] = [
       "tailwind-merge"
     ],
     "install": "npx @zoblocks/cli add timeline",
+    "controls": [
+      {
+        "prop": "mode",
+        "control": "segmented",
+        "label": "Mode",
+        "options": [
+          "start",
+          "end",
+          "alternate"
+        ],
+        "defaultValue": "start"
+      },
+      {
+        "prop": "variant",
+        "control": "segmented",
+        "label": "Variant",
+        "options": [
+          "outlined",
+          "filled"
+        ],
+        "defaultValue": "outlined"
+      },
+      {
+        "prop": "reverse",
+        "control": "switch",
+        "label": "Newest first",
+        "defaultValue": false
+      }
+    ],
     "relationships": {
       "builtWith": [],
       "usedIn": [

@@ -73,6 +73,7 @@ import {
 import { SignGate, type NoteAuthor } from "@/registry/zoblocks/clinical-note/clinical-note";
 import type { Finding } from "@zoblocks/clinical-note-core";
 import { SafetyPlan, type SafetyPlanSteps } from "@/registry/zoblocks/safety-plan/safety-plan";
+import { Timeline, type TimelineItemType } from "@/registry/zoblocks/timeline/timeline";
 import { Switch, type SwitchProps } from "@/registry/zoblocks/switch/switch";
 import { Accordion } from "@/registry/zoblocks/accordion/accordion";
 import { CHART_ITEMS } from "./accordion-demos";
@@ -400,6 +401,14 @@ const SP_STEPS: SafetyPlanSteps = {
   environment: { entries: ["Priya is holding the spare keys to the garage"] },
 };
 
+/** Four admission events, in order. */
+const TL_ITEMS: TimelineItemType[] = [
+  { title: "14 Aug, 08:12", content: "Admitted — ward round" },
+  { title: "14 Aug, 14:30", content: "Hemoglobin 7.1 g/dL, down from 11.8 g/dL" },
+  { title: "15 Aug, 09:00", content: "First unit transfused" },
+  { title: "16 Aug, 14:02", content: "Progress note filed" },
+];
+
 const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
   /*
    * The worklist with every interaction live — sort, selection, held
@@ -675,6 +684,11 @@ const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
       <SafetyPlan steps={SP_STEPS} revisedAt="2026-08-11" headingLevel={3} {...props} />
     </div>
   ),
+  timeline: (props) => (
+    <div className="mx-auto w-full max-w-xl">
+      <Timeline items={TL_ITEMS} aria-label="Admission chronology" {...props} />
+    </div>
+  ),
 };
 
 /**
@@ -772,6 +786,7 @@ const FIXED_ATTRS: Record<string, readonly string[] | ((props: Props) => readonl
     'attestation="I have reviewed this note in its entirety and attest that it accurately reflects the care I provided."',
   ],
   "safety-plan": ["steps={steps}", 'revisedAt="2026-08-11"', "headingLevel={3}"],
+  timeline: ["items={items}", 'aria-label="Admission chronology"'],
 };
 
 function resolveFixed(
