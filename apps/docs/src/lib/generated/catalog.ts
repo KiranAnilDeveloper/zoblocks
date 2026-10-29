@@ -2982,6 +2982,25 @@ export const CATALOG: ComponentDoc[] = [
       "tailwind-merge"
     ],
     "install": "npx @zoblocks/cli add chart-accordion",
+    "controls": [
+      {
+        "prop": "toolbar",
+        "control": "switch",
+        "label": "Toolbar",
+        "defaultValue": true
+      },
+      {
+        "prop": "density",
+        "control": "segmented",
+        "label": "Density",
+        "options": [
+          "patient",
+          "standard",
+          "clinical"
+        ],
+        "defaultValue": "clinical"
+      }
+    ],
     "relationships": {
       "builtWith": [
         "accordion"
@@ -4944,7 +4963,15 @@ export const CATALOG: ComponentDoc[] = [
       "prosemirror-history",
       "prosemirror-commands"
     ],
-    "install": "npx @zoblocks/cli add clinical-note"
+    "install": "npx @zoblocks/cli add clinical-note",
+    "controls": [
+      {
+        "prop": "canSign",
+        "control": "switch",
+        "label": "Policy permits signing",
+        "defaultValue": true
+      }
+    ]
   },
   {
     "name": "clinical-status",
@@ -13252,6 +13279,25 @@ export const CATALOG: ComponentDoc[] = [
       "tailwind-merge"
     ],
     "install": "npx @zoblocks/cli add safety-plan",
+    "controls": [
+      {
+        "prop": "pinCrisisStep",
+        "control": "switch",
+        "label": "Pin crisis step",
+        "defaultValue": true
+      },
+      {
+        "prop": "density",
+        "control": "segmented",
+        "label": "Density",
+        "options": [
+          "patient",
+          "standard",
+          "clinical"
+        ],
+        "defaultValue": "patient"
+      }
+    ],
     "relationships": {
       "builtWith": [
         "accordion"
@@ -14768,6 +14814,35 @@ export const CATALOG: ComponentDoc[] = [
       "tailwind-merge"
     ],
     "install": "npx @zoblocks/cli add timeline",
+    "controls": [
+      {
+        "prop": "mode",
+        "control": "segmented",
+        "label": "Mode",
+        "options": [
+          "start",
+          "end",
+          "alternate"
+        ],
+        "defaultValue": "start"
+      },
+      {
+        "prop": "variant",
+        "control": "segmented",
+        "label": "Variant",
+        "options": [
+          "outlined",
+          "filled"
+        ],
+        "defaultValue": "outlined"
+      },
+      {
+        "prop": "reverse",
+        "control": "switch",
+        "label": "Newest first",
+        "defaultValue": false
+      }
+    ],
     "relationships": {
       "builtWith": [],
       "usedIn": [
