@@ -70,6 +70,8 @@ import {
   ChartAccordion,
   type ChartSection,
 } from "@/registry/zoblocks/chart-accordion/chart-accordion";
+import { SignGate, type NoteAuthor } from "@/registry/zoblocks/clinical-note/clinical-note";
+import type { Finding } from "@zoblocks/clinical-note-core";
 import { Switch, type SwitchProps } from "@/registry/zoblocks/switch/switch";
 import { Accordion } from "@/registry/zoblocks/accordion/accordion";
 import { CHART_ITEMS } from "./accordion-demos";
@@ -357,6 +359,25 @@ const CA_SECTIONS: ChartSection[] = [
   },
 ];
 
+const CN_AUTHOR: NoteAuthor = { display: "R. Menon, MD", role: "Resident", requiresCosign: true };
+
+/** One block, one warning, one pass — so the gate has real work to summarise either way. */
+const CN_FINDINGS: Finding[] = [
+  {
+    id: "unreviewed-ai",
+    severity: "block",
+    title: "A model-drafted passage has not been reviewed",
+    detail: "History of present illness, second sentence.",
+  },
+  {
+    id: "copy-forward",
+    severity: "warn",
+    title: "32% of this note is copied forward",
+    detail: "From the admission note, 14 Aug.",
+  },
+  { id: "required-sections", severity: "pass", title: "Every required section has content" },
+];
+
 const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
   /*
    * The worklist with every interaction live — sort, selection, held
@@ -609,6 +630,24 @@ const RENDERERS: Record<string, (props: Props) => React.ReactNode> = {
       />
     </div>
   ),
+  /*
+   * SignGate, not the full editor — it is the export `controls` validates
+   * against (the catalogue's "front door" for this component), and the
+   * knob worth having here is the one the gate itself names: whether
+   * policy even permits this author to sign, kept separate from whether
+   * the findings currently allow it.
+   */
+  "clinical-note": (props) => (
+    <div className="mx-auto w-full max-w-md">
+      <SignGate
+        findings={CN_FINDINGS}
+        author={CN_AUTHOR}
+        canSign
+        attestation="I have reviewed this note in its entirety and attest that it accurately reflects the care I provided."
+        {...props}
+      />
+    </div>
+  ),
 };
 
 /**
@@ -699,6 +738,11 @@ const FIXED_ATTRS: Record<string, readonly string[] | ((props: Props) => readonl
     "sections={chartSections}",
     'toolbarLabel="Okonkwo, A. · MRN 4471902"',
     'defaultOpenKeys={["risk"]}',
+  ],
+  "clinical-note": [
+    "findings={findings}",
+    'author={{ display: "R. Menon, MD", role: "Resident", requiresCosign: true }}',
+    'attestation="I have reviewed this note in its entirety and attest that it accurately reflects the care I provided."',
   ],
 };
 

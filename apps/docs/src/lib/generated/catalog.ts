@@ -4963,7 +4963,15 @@ export const CATALOG: ComponentDoc[] = [
       "prosemirror-history",
       "prosemirror-commands"
     ],
-    "install": "npx @zoblocks/cli add clinical-note"
+    "install": "npx @zoblocks/cli add clinical-note",
+    "controls": [
+      {
+        "prop": "canSign",
+        "control": "switch",
+        "label": "Policy permits signing",
+        "defaultValue": true
+      }
+    ]
   },
   {
     "name": "clinical-status",
