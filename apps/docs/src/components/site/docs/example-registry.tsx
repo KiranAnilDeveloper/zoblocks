@@ -35,6 +35,7 @@ import * as CtpDemo from "../care-team-presence-demos";
 import * as ChDemo from "../chart-header-demos";
 import * as PcDemo from "../provenance-chip-demos";
 import * as RpsDemo from "../recent-patient-stack-demos";
+import * as RvDemo from "../result-value-demos";
 
 /* ------------------------------------------------------------------ */
 /* Stand-ins for the host application                                  */
@@ -468,6 +469,13 @@ export const EXAMPLE_PREVIEWS: Readonly<
     similar: () => <RpsDemo.BothGrowAnIdentifier />,
     closing: () => <RpsDemo.ClosingIsGraded />,
     return: () => <RpsDemo.ReturnReasserts />,
+  },
+
+  "result-value": {
+    "from-fhir": () => <RvDemo.FromFhirUnedited />,
+    absence: () => <RvDemo.SevenAbsences />,
+    correction: () => <RvDemo.CorrectionShowsSuperseded />,
+    "delta-suppressed": () => <RvDemo.DeltaRefusedOnMethodChange />,
   },
 };
 
