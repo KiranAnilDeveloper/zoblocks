@@ -36,6 +36,7 @@ import * as ChDemo from "../chart-header-demos";
 import * as PcDemo from "../provenance-chip-demos";
 import * as RpsDemo from "../recent-patient-stack-demos";
 import * as RvDemo from "../result-value-demos";
+import * as RiskDemo from "../risk-indicator-demos";
 
 /* ------------------------------------------------------------------ */
 /* Stand-ins for the host application                                  */
@@ -476,6 +477,13 @@ export const EXAMPLE_PREVIEWS: Readonly<
     absence: () => <RvDemo.SevenAbsences />,
     correction: () => <RvDemo.CorrectionShowsSuperseded />,
     "delta-suppressed": () => <RvDemo.DeltaRefusedOnMethodChange />,
+  },
+
+  "risk-indicator": {
+    "the-three-failures": () => <RiskDemo.TheThreeFailures />,
+    expired: () => <RiskDemo.ExpiredNotOld />,
+    unscored: () => <RiskDemo.NotScoredIsNotLow />,
+    concentration: () => <RiskDemo.ConcentrationDominance />,
   },
 };
 
