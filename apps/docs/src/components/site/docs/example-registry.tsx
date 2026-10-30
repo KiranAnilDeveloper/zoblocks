@@ -34,6 +34,7 @@ import * as CpDemo from "../chart-command-palette-demos";
 import * as CtpDemo from "../care-team-presence-demos";
 import * as ChDemo from "../chart-header-demos";
 import * as PcDemo from "../provenance-chip-demos";
+import * as RpsDemo from "../recent-patient-stack-demos";
 
 /* ------------------------------------------------------------------ */
 /* Stand-ins for the host application                                  */
@@ -460,6 +461,13 @@ export const EXAMPLE_PREVIEWS: Readonly<
     "document-vintage": () => <PcDemo.DocumentVintage />,
     ledger: () => <PcDemo.OneSubscription />,
     "staleness-policy": () => <PcDemo.FourDaysDiffersByDatum />,
+  },
+
+  "recent-patient-stack": {
+    identity: () => <RpsDemo.HueIsDerived />,
+    similar: () => <RpsDemo.BothGrowAnIdentifier />,
+    closing: () => <RpsDemo.ClosingIsGraded />,
+    return: () => <RpsDemo.ReturnReasserts />,
   },
 };
 
