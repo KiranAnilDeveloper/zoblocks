@@ -32,6 +32,7 @@ import * as TimelineDemo from "../care-timeline-demos";
 import * as RecDemo from "../recorder-demos";
 import * as CpDemo from "../chart-command-palette-demos";
 import * as CtpDemo from "../care-team-presence-demos";
+import * as ChDemo from "../chart-header-demos";
 
 /* ------------------------------------------------------------------ */
 /* Stand-ins for the host application                                  */
@@ -444,6 +445,13 @@ export const EXAMPLE_PREVIEWS: Readonly<
     "coverage-gap": () => <CtpDemo.CoverageGapIsDrawn />,
     escalation: () => <CtpDemo.EscalationIsARedirect />,
     "co-presence": () => <CtpDemo.ToldBeforeYouType />,
+  },
+
+  "chart-header": {
+    collapse: () => <ChDemo.CollapsesToTheStrip />,
+    spcu: () => <ChDemo.SpcuWithContext />,
+    encounter: () => <ChDemo.NoEncounterIsAState />,
+    absence: () => <ChDemo.TwoFactsAlwaysOnTheStrip />,
   },
 };
 
