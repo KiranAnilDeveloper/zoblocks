@@ -31,6 +31,7 @@ import * as GridDemo from "../data-grid-demos";
 import * as TimelineDemo from "../care-timeline-demos";
 import * as RecDemo from "../recorder-demos";
 import * as CpDemo from "../chart-command-palette-demos";
+import * as CtpDemo from "../care-team-presence-demos";
 
 /* ------------------------------------------------------------------ */
 /* Stand-ins for the host application                                  */
@@ -436,6 +437,13 @@ export const EXAMPLE_PREVIEWS: Readonly<
     audit: () => <CpDemo.EveryPatientSearchRecorded />,
     verbs: () => <CpDemo.VerbsFirst />,
     "second-enter": () => <CpDemo.SecondEnterConfirms />,
+  },
+
+  "care-team-presence": {
+    "not-a-green-dot": () => <CtpDemo.NotAGreenDot />,
+    "coverage-gap": () => <CtpDemo.CoverageGapIsDrawn />,
+    escalation: () => <CtpDemo.EscalationIsARedirect />,
+    "co-presence": () => <CtpDemo.ToldBeforeYouType />,
   },
 };
 
