@@ -34,6 +34,9 @@ import * as CpDemo from "../chart-command-palette-demos";
 import * as CtpDemo from "../care-team-presence-demos";
 import * as ChDemo from "../chart-header-demos";
 import * as PcDemo from "../provenance-chip-demos";
+import * as RpsDemo from "../recent-patient-stack-demos";
+import * as RvDemo from "../result-value-demos";
+import * as RiskDemo from "../risk-indicator-demos";
 
 /* ------------------------------------------------------------------ */
 /* Stand-ins for the host application                                  */
@@ -460,6 +463,27 @@ export const EXAMPLE_PREVIEWS: Readonly<
     "document-vintage": () => <PcDemo.DocumentVintage />,
     ledger: () => <PcDemo.OneSubscription />,
     "staleness-policy": () => <PcDemo.FourDaysDiffersByDatum />,
+  },
+
+  "recent-patient-stack": {
+    identity: () => <RpsDemo.HueIsDerived />,
+    similar: () => <RpsDemo.BothGrowAnIdentifier />,
+    closing: () => <RpsDemo.ClosingIsGraded />,
+    return: () => <RpsDemo.ReturnReasserts />,
+  },
+
+  "result-value": {
+    "from-fhir": () => <RvDemo.FromFhirUnedited />,
+    absence: () => <RvDemo.SevenAbsences />,
+    correction: () => <RvDemo.CorrectionShowsSuperseded />,
+    "delta-suppressed": () => <RvDemo.DeltaRefusedOnMethodChange />,
+  },
+
+  "risk-indicator": {
+    "the-three-failures": () => <RiskDemo.TheThreeFailures />,
+    expired: () => <RiskDemo.ExpiredNotOld />,
+    unscored: () => <RiskDemo.NotScoredIsNotLow />,
+    concentration: () => <RiskDemo.ConcentrationDominance />,
   },
 };
 
