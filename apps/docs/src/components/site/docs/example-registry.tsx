@@ -33,6 +33,7 @@ import * as RecDemo from "../recorder-demos";
 import * as CpDemo from "../chart-command-palette-demos";
 import * as CtpDemo from "../care-team-presence-demos";
 import * as ChDemo from "../chart-header-demos";
+import * as PcDemo from "../provenance-chip-demos";
 
 /* ------------------------------------------------------------------ */
 /* Stand-ins for the host application                                  */
@@ -452,6 +453,13 @@ export const EXAMPLE_PREVIEWS: Readonly<
     spcu: () => <ChDemo.SpcuWithContext />,
     encounter: () => <ChDemo.NoEncounterIsAState />,
     absence: () => <ChDemo.TwoFactsAlwaysOnTheStrip />,
+  },
+
+  "provenance-chip": {
+    "six-provenances": () => <PcDemo.SixProvenances />,
+    "document-vintage": () => <PcDemo.DocumentVintage />,
+    ledger: () => <PcDemo.OneSubscription />,
+    "staleness-policy": () => <PcDemo.FourDaysDiffersByDatum />,
   },
 };
 
